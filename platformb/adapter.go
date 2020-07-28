@@ -1,4 +1,4 @@
-package brasilia
+package platformb
 
 import (
 	"github.com/boson-project/grid/mock"

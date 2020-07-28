@@ -10,9 +10,10 @@ import (
 	"strings"
 
 	"github.com/boson-project/grid"
-	"github.com/boson-project/grid/brasilia"
 	"github.com/boson-project/grid/knative"
 	"github.com/boson-project/grid/local"
+	"github.com/boson-project/grid/platformb"
+	"github.com/boson-project/grid/platformc"
 )
 
 var usage = `grid
@@ -23,7 +24,7 @@ var (
 	Version = flag.Bool("version", false, "Print version [$GRID_VERSION]")
 	Verbose = flag.Bool("verbose", false, "Print verbose logs [$GRID_VERBOSE]")
 	Address = flag.String("address", grid.DefaultAddress, "Listen address [$GRID_ADDRESS]")
-	Adapter = flag.String("adapter", "local", "Underlying architecture (knative|brasilia|local) [$GRID_ADAPTER]")
+	Adapter = flag.String("adapter", "local", "Underlying architecture (knative|local) [$GRID_ADAPTER]")
 
 	date string
 	vers string
@@ -94,8 +95,10 @@ func adapter() grid.Adapter {
 	switch *Adapter {
 	case "knative":
 		return knative.NewAdapter()
-	case "brasilia":
-		return brasilia.NewAdapter()
+	case "platformb":
+		return platformb.NewAdapter()
+	case "platformc":
+		return platformc.NewAdapter()
 	default:
 		return local.NewAdapter()
 	}
