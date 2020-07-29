@@ -31,10 +31,13 @@ func (g *Grid) handleEvents(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	switch r.Method {
 	case "GET":
-		var events = []string{}
+		var events []string
 		if events, err = g.adapter.EventManager().List(); err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
-			json.NewEncoder(w).Encode(err)
+			err = json.NewEncoder(w).Encode(err)
+			if err != nil {
+				fmt.Fprintln(os.Stderr, fmt.Errorf("error while encoding error: %v", err))
+			}
 			return
 		}
 		if err := json.NewEncoder(w).Encode(events); err != nil {
@@ -42,13 +45,22 @@ func (g *Grid) handleEvents(w http.ResponseWriter, r *http.Request) {
 		}
 	case "POST":
 		w.WriteHeader(http.StatusNotImplemented)
-		json.NewEncoder(w).Encode("Creation of events not implemented.")
+		err = json.NewEncoder(w).Encode("Creation of events not implemented.")
+		if err != nil {
+			fmt.Fprintln(os.Stderr, err.Error())
+		}
 	case "DELETE":
 		w.WriteHeader(http.StatusNotImplemented)
-		json.NewEncoder(w).Encode("Deleteion of events not implemented.")
+		err = json.NewEncoder(w).Encode("Deleteion of events not implemented.")
+		if err != nil {
+			fmt.Fprintln(os.Stderr, err.Error())
+		}
 	default:
 		w.WriteHeader(http.StatusMethodNotAllowed)
-		json.NewEncoder(w).Encode("Method not supported.")
+		err = json.NewEncoder(w).Encode("Method not supported.")
+		if err != nil {
+			fmt.Fprintln(os.Stderr, err.Error())
+		}
 	}
 }
 
@@ -58,10 +70,13 @@ func (g *Grid) handleSubscriptions(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	switch r.Method {
 	case "GET":
-		var subscriptions = []string{}
+		var subscriptions []string
 		if subscriptions, err = g.adapter.SubscriptionManager().List(); err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
-			json.NewEncoder(w).Encode(err)
+			err = json.NewEncoder(w).Encode(err)
+			if err != nil {
+				fmt.Fprintln(os.Stderr, fmt.Errorf("error while encoding error: %v", err))
+			}
 			return
 		}
 		if err := json.NewEncoder(w).Encode(subscriptions); err != nil {
@@ -69,12 +84,21 @@ func (g *Grid) handleSubscriptions(w http.ResponseWriter, r *http.Request) {
 		}
 	case "POST":
 		w.WriteHeader(http.StatusNotImplemented)
-		json.NewEncoder(w).Encode("Creation of subscriptions not implemented.")
+		err = json.NewEncoder(w).Encode("Creation of subscriptions not implemented.")
+		if err != nil {
+			fmt.Fprintln(os.Stderr, err.Error())
+		}
 	case "DELETE":
 		w.WriteHeader(http.StatusNotImplemented)
-		json.NewEncoder(w).Encode("Deleteion of subscriptions not implemented.")
+		err = json.NewEncoder(w).Encode("Deleteion of subscriptions not implemented.")
+		if err != nil {
+			fmt.Fprintln(os.Stderr, err.Error())
+		}
 	default:
 		w.WriteHeader(http.StatusMethodNotAllowed)
-		json.NewEncoder(w).Encode("Method not supported.")
+		err = json.NewEncoder(w).Encode("Method not supported.")
+		if err != nil {
+			fmt.Fprintln(os.Stderr, err.Error())
+		}
 	}
 }

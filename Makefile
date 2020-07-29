@@ -14,7 +14,10 @@ $(BIN): $(CODE)
 	go build -ldflags "-X main.date=$(DATE) -X main.vers=$(VERS) -X main.hash=$(HASH)" ./cmd/$(BIN)
 
 test:
-	go test -cover -coverprofile=coverage.out ./...
+	go test -race -cover -coverprofile=coverage.out ./...
+
+check:
+	golangci-lint run --enable=unconvert,prealloc
 
 image: Dockerfile
 	docker build -t $(REPO):$(VERS) \
